@@ -8,7 +8,7 @@ def send_email_template(
     bcc: str = None,
     **templateData,
 ):
-    body = render(f'templates/emails/{templateName}', **templateData)
+    body = render(f'emails/{templateName}', **templateData)
 
     print(f'\n------------ Email Start ------------\nTo: {to}\nCC: {cc}\nBCC: {bcc}\nSubject: {subject }\n\n{body}\n------------- Email End -------------\n')
 
@@ -33,7 +33,7 @@ def send_sms_template(
     to: str,
     **templateData
 ):
-    body = render(f'templates/sms/{templateName}', **templateData)
+    body = render(f'sms/{templateName}', **templateData)
 
     print(f'\n------------ SMS Start ------------\nTo: {to}\n\n{body}\n------------- SMS End -------------\n')    
     #TODO: add sms send code

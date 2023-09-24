@@ -142,7 +142,6 @@ def send_password_reset_token(selector: str) -> None:
         "type": "forgot-password",
         "userId": account.get("_id"),
         "expires": datetime.utcnow() + timedelta(minutes=authConfig.Password_Reset_Token_Lifetime),
-        "type": "email"
     })
 
 def fillBackupCodes(total: int, currentCodes: list[int], codeLenth: int = 12):

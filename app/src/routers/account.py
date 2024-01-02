@@ -7,6 +7,7 @@ from core import comunicator, validation as validate
 from .twofa import router as Account2faRouter
 from datetime import datetime, timedelta
 from core.auth.auth import login_user
+import config as generalConfig
 from typing import Annotated
 
 router = APIRouter()
@@ -59,7 +60,7 @@ async def PATCH_Update_Email_Address(address: Annotated[str, Form()], account = 
         "type": "email_change",
         "address": address,
         "userId": account.get("_id"),
-    }, Minutes=emailConfig.Email_Change_Token_Lifetime)
+    }, emailConfig.Email_Change_Token_Lifetime)
 
     #TODO: add front end client password reset uri 
 
@@ -69,14 +70,14 @@ async def PATCH_Update_Email_Address(address: Annotated[str, Form()], account = 
         "Change your email",
         username=account.get("username"),
         address=address,
-        link=f"https://yoursite.com/change-password/{token}"
+        link=f"{generalConfig.Front_End_Uri}/change-password/{token}"
     )
 
     AuthCodesDB.insert({
         "type": "change-email",
         "userId": account.get("_id"),
         "token": token,
-        "expires": datetime.utcnow() + timedelta(minutes=emailConfig.Email_Change_Token_Lifetime)
+        "expires": datetime.utcnow() + emailConfig.Email_Change_Token_Lifetime
     })
 
 @router.patch("/change-email/{token}", tags=["Change Email"])
@@ -139,7 +140,7 @@ async def PATCH_Resend_Phone_Update_Code(token: str, account = Depends(getUserFr
         "type": "Add_Phone_Number",
         "method": "phone",
         "code": code,
-        "expires": datetime.utcnow() + timedelta(minutes=phoneConfig.Add_Phone_Code_Lifetime)
+        "expires": datetime.utcnow() + phoneConfig.Add_Phone_Code_Lifetime
     })
 
 @router.patch('/update-phone-number/{token}', tags=['Change Phone Number'])

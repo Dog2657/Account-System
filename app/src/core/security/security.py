@@ -24,14 +24,9 @@ def encodeToken(data: dict) -> str:
 def decodeToken(token: str) -> str:
     return jwt.decode(token, Token_Signing_Key, Token_Algorithm)
    
-def encodeTimeToken(
-        data: dict,
-        Seconds: int = 0,
-        Minutes: int = 0,
-        Hours: int = 0,
-    ) -> str:
+def encodeTimeToken( data: dict, diffrence: timedelta ) -> str:
     encode = data.copy()
-    encode['exp'] = datetime.now() + timedelta(seconds=Seconds, minutes=Minutes, hours=Hours)
+    encode['exp'] = datetime.now() + diffrence
     return encodeToken(encode)
 
 

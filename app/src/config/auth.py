@@ -1,34 +1,27 @@
-#This is used for how long till access tokens expire
-#In hours
-Access_Token_Lifetime = 2
-
-#This is used to auth 2fa
-#It's swaped to an access token when correctly authed
-#In minutes
-Twofa_Token_Lifetime = 30
+from datetime import timedelta
 
 
-#This used for the "Forgot password" feture
-#It's sent as a token on the https://url.com/password-reset/{Token} inside of emails
-#In minutes
-Password_Reset_Token_Lifetime = 15
+#The time before an access token becomes invalid
+Access_Token_Lifetime = timedelta(hours=2)
+
+#The time till the 2fa tokens expire
+Twofa_Token_Lifetime = timedelta(minutes=30)
 
 
+#Used for password reset links when a "forgot password" email is sent
+Password_Reset_Token_Lifetime = timedelta(minutes=15)
 
 
-#Used for activating time based auth
-#In Minutes
-Time_2fa_Activation_Token_Lifetime  = 15
+#The time till a 2fa setup token expires
+Time_2fa_Activation_Token_Lifetime = timedelta(hours=15)
 
 
-#Used to create a new account (External services included)
-#In hours
-Pending_Accounts_Lifetime_Token = 1
+#Used for access when user hasn't verified their email address
+Pending_Accounts_Lifetime_Token =  timedelta(hours=1)
 
 #Used to validate email addresses when making new accounts
 #In minutes
-Pending_Account_Code_Lifetime = 15
+Pending_Account_Code_Lifetime = timedelta(minutes=15)
 
-#The token to create an account using a external service
-#In minutes
-Service_Account_Creation_Lifetime = 15
+#Used when crateing an account with external services (Google, Facebook, Discord, Github etc)
+Service_Account_Creation_Lifetime = timedelta(minutes=15)

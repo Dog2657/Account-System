@@ -1,5 +1,4 @@
 from .security import generateOneTimeNumberCode
-from core import environment
 import config as generalConfig
 import pyotp
 

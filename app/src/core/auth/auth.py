@@ -9,7 +9,7 @@ import config as generalConfig
 from datetime import datetime
 
 def login_user(response: Response, userId: str) -> dict:
-    expires = datetime.utcnow() + timedelta(hours= authConfig.Access_Token_Lifetime )
+    expires = datetime.utcnow() + authConfig.Access_Token_Lifetime
 
     access_token = encodeToken({
         "userId": userId,
@@ -48,7 +48,7 @@ def generate_pending_account_token_response(userId: str, email: str, username: s
 
 
 def generate_2a_token_response(userId: str, method: str):
-    expires = datetime.utcnow() + timedelta(minutes=authConfig.Twofa_Token_Lifetime)
+    expires = datetime.utcnow() + authConfig.Twofa_Token_Lifetime
 
     token = encodeToken({
         "userId": userId,
@@ -80,7 +80,7 @@ def login_with_external_service(response: Response, serviceName: str, userId: st
        raise HTTPException(501, "Unable to connect and login to your account from external service")
 
     #Create account with service
-    expires = datetime.utcnow() + timedelta(minutes=authConfig.Service_Account_Creation_Lifetime)
+    expires = datetime.utcnow() + authConfig.Service_Account_Creation_Lifetime
 
     token = encodeToken({
         "type": 'account_creation_with_serivce',
@@ -126,7 +126,7 @@ def send_password_reset_token(selector: str) -> None:
         "type": "password_reset",
         "userId": account.get("_id"),
         "issued": datetime.utcnow().timestamp()
-    }, Minutes=authConfig.Password_Reset_Token_Lifetime)
+    }, authConfig.Password_Reset_Token_Lifetime)
 
     #TODO: add front end client password reset uri 
 

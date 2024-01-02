@@ -16,7 +16,7 @@ async def POST_Start_Activation_Time(user = Depends(getUserFromAccessToken)):
     if(user.get("2fa")):
         raise HTTPException(401, "You already have 2fa enabled")
     
-    expires = datetime.utcnow() + timedelta(hours=authConfig.Time_2fa_Activation_Token_Lifetime)
+    expires = datetime.utcnow() + authConfig.Time_2fa_Activation_Token_Lifetime
     secret = generateSecretKey()
 
     token = encodeToken({
@@ -67,7 +67,7 @@ async def POST_Start_Activation_Email(user = Depends(getUserFromAccessToken)):
     if(user.get("2fa")):
         raise HTTPException(401, "You already have 2fa enabled")
     
-    expires = datetime.utcnow() + timedelta(minutes=emailConfig.Email_2fa_Activation_Token_Lifetime)  
+    expires = datetime.utcnow() + emailConfig.Email_2fa_Activation_Token_Lifetime
 
     token = encodeToken({
         "userId": user.get("_id"),
@@ -124,7 +124,7 @@ async def POST_Start_Activation_Phone(user = Depends(getUserFromAccessToken)):
     if(user.get('phone') is None):
         raise HTTPException(400, "No phone number linked with this account")
     
-    expires = datetime.utcnow() + timedelta(minutes=phoneConfig.Phone_2fa_Activation_Token_Lifetime)  
+    expires = datetime.utcnow() + phoneConfig.Phone_2fa_Activation_Token_Lifetime
 
     token = encodeToken({
         "userId": user.get("_id"),
@@ -210,7 +210,7 @@ async def PUT_Resend_2fa_Code(tokenDetails = Depends(decodeToken), user = Depend
 
     match activationType:
         case 'email':
-            delta = timedelta(minutes=emailConfig.Email_2fa_Activation_Token_Lifetime)
+            delta = emailConfig.Email_2fa_Activation_Token_Lifetime
             try:
                 comunicator.send_email_template(
                     templateName='2fa_activation.html',
@@ -222,7 +222,7 @@ async def PUT_Resend_2fa_Code(tokenDetails = Depends(decodeToken), user = Depend
                 raise HTTPException(500, "Unable to send email")
       
         case "phone":
-            delta = timedelta(minutes=phoneConfig.Phone_2fa_Activation_Token_Lifetime)
+            delta = phoneConfig.Phone_2fa_Activation_Token_Lifetime
             try:
                 comunicator.send_sms_template(
                     templateName='2fa_activation.txt',
@@ -265,7 +265,7 @@ async def PUT_Send_Deactivation_Code(user = Depends(getUserFromAccessToken)):
 
     match user.get('2fa').get('method'):
         case 'email':
-            delta = timedelta(minutes=emailConfig.Email_2fa_Deactivation_Token)
+            delta = emailConfig.Email_2fa_Deactivation_Token
             try:
                 comunicator.send_email_template(
                     templateName='2fa_deactivation.html',
@@ -277,7 +277,7 @@ async def PUT_Send_Deactivation_Code(user = Depends(getUserFromAccessToken)):
                 raise HTTPException(500, "Unable to send email")
       
         case "phone":
-            delta = timedelta(minutes=phoneConfig.Phone_2fa_Deactivation_Token)
+            delta = phoneConfig.Phone_2fa_Deactivation_Token
             try:
                 comunicator.send_sms_template(
                     templateName='2fa_deactivation.txt',

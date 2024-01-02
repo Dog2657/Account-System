@@ -50,7 +50,7 @@ async def PUT_Resend_2fa_Code(user = Depends(authDependencies.getUserFrom2faAuth
 
     match user.get('2fa').get('method'):
         case 'email':
-            delta = timedelta(minutes=emailConfig.Email_Auth_Codes_Lifetime)
+            delta = emailConfig.Email_Auth_Codes_Lifetime
             try:
                 comunicator.send_email_template(
                     templateName='2fa_login.html',
@@ -62,7 +62,7 @@ async def PUT_Resend_2fa_Code(user = Depends(authDependencies.getUserFrom2faAuth
                 raise HTTPException(500, "Unable to send email")
             
         case "phone":
-            delta = timedelta(minutes=phoneConfig.Phone_2fa_Auth_Code_Lifetime)
+            delta = phoneConfig.Phone_2fa_Auth_Code_Lifetime
             try:
                 comunicator.send_sms_template(
                     templateName='2fa_login.txt',

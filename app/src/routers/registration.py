@@ -27,7 +27,7 @@ async def POST_Signup(email: Annotated[str, Form()], username: Annotated[str, Fo
     if(not validate.password(password)):
         raise HTTPException(400, "Password is week")
     
-    expires = datetime.utcnow() + timedelta(hours=authConfig.Pending_Accounts_Lifetime_Token)
+    expires = datetime.utcnow() + authConfig.Pending_Accounts_Lifetime_Token
 
     id = PendingUserDB.insert(asdict( PendingUser(email, expires, username, hash_password(password), None) ))
 
@@ -90,5 +90,5 @@ async def PUT_resend_activation_Code(user = Depends(getUserFromActivationToken))
         "userId": user.get('_id'),
         "method": "email",
         "type": "activation",
-        "expires": datetime.utcnow() + timedelta(minutes=authConfig.Pending_Account_Code_Lifetime)
+        "expires": datetime.utcnow() + authConfig.Pending_Account_Code_Lifetime
     })

@@ -52,7 +52,7 @@ def POST_Create_Account_With_service(token: str, username: Annotated[str, Form()
     if(not validate.password(password)):
         raise HTTPException(400, "Password is week")
     
-    expires = datetime.utcnow() + timedelta(hours=authConfig.Pending_Accounts_Lifetime_Token)
+    expires = datetime.utcnow() + authConfig.Pending_Accounts_Lifetime_Token
 
     account = PendingUser(email, expires, username, hash_password(password))
     account.service = {

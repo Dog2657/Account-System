@@ -1,19 +1,5 @@
 from .templator import render
 
-def send_email_template(
-    templateName: str,
-    to: str,
-    subject: str,
-    cc: str = None,
-    bcc: str = None,
-    **templateData,
-):
-    body = render(f'emails/{templateName}', **templateData)
-
-    print(f'\n------------ Email Start ------------\nTo: {to}\nCC: {cc}\nBCC: {bcc}\nSubject: {subject }\n\n{body}\n------------- Email End -------------\n')
-
-    #TODO: add email send code
-
 
 def send_email(
     to: str,
@@ -27,6 +13,27 @@ def send_email(
     #TODO: add email send code
 
 
+def send_sms(
+    to: str,
+    body: str
+):
+    print(f'\n------------ SMS Start ------------\nTo: {to}\n\n{body}\n------------- SMS End -------------\n')
+    #TODO: add sms send code
+
+
+
+
+def send_email_template(
+    templateName: str,
+    to: str,
+    subject: str,
+    cc: str = None,
+    bcc: str = None,
+    **templateData,
+):
+    body = render(f'emails/{templateName}', **templateData)
+    send_email(to, subject, cc, bcc, body, None)
+
 
 def send_sms_template(
     templateName: str,
@@ -34,14 +41,4 @@ def send_sms_template(
     **templateData
 ):
     body = render(f'sms/{templateName}', **templateData)
-
-    print(f'\n------------ SMS Start ------------\nTo: {to}\n\n{body}\n------------- SMS End -------------\n')    
-    #TODO: add sms send code
-
-
-def send_sms(
-    to: str,
-    body: str
-):
-    print(f'\n------------ SMS Start ------------\nTo: {to}\n\n{body}\n------------- SMS End -------------\n')
-    #TODO: add sms send code
+    send_sms(to, body)
